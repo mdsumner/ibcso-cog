@@ -18,20 +18,13 @@ at this url
 
     gdal_translate IBCSO_v2_ice-surface.tif IBCSO_v2_ice-surface_cog.tif -of COG -co COMPRESS=ZSTD -co PREDICTOR=2 -co SPARSE_OK=YES -co OVERVIEW_RESAMPLING=AVERAGE -co BLOCKSIZE=480 -co NUM_THREADS=ALL_CPUS
 
-We chose options blocksize 480 so that the smallest overview would be
-that size (at 4800 we only end up with 2 overview levels).
+See below for notes on these options.
 
-SPARSE_OK: ensures unused blocks are not stored (they are all 0, or
-nodata).
-
-COMPRESS: could choose DEFLATE instead
-
-OVERVIEW_RESAMPLING: AVERAGE so that the average value is stored from
-higher resolution levels, not just a sample
-
-NUM_THREADS: this just makes it go faster (for the compression).
-
-Some comparisons on performance are shown below:
+Some comparisons on performance are shown below, please note that five
+quite different extractions from the COG url are timed for less than 10
+seconds, giving five quite different data configurations at different
+scales and in different projections. To do one of the five from the
+local copy of the current v2 .tif takes nearly 10 seconds on its own.
 
 ``` r
 dsn <- "/vsicurl/https://github.com/mdsumner/ibcso-cog/raw/main/IBCSO_v2_ice-surface_cog.tif"
@@ -62,44 +55,7 @@ r5 <- project(r, rast(ext(-180, 180, -90, -50), res = .25), by_util = T)
 ```
 
     ##    user  system elapsed 
-    ##   0.604   0.124  12.923
-
-``` r
-plot(r1)
-```
-
-![](README_files/figure-gfm/cog-1.png)<!-- -->
-
-``` r
-plot(r2)
-```
-
-![](README_files/figure-gfm/cog-2.png)<!-- -->
-
-``` r
-plot(r3)
-```
-
-![](README_files/figure-gfm/cog-3.png)<!-- -->
-
-``` r
-plot(r4)
-```
-
-![](README_files/figure-gfm/cog-4.png)<!-- -->
-
-``` r
-plot(r5)
-```
-
-![](README_files/figure-gfm/cog-5.png)<!-- -->
-
-``` r
-plot(project(r, template, by_util = TRUE))
-plot(ext(r2), add = TRUE)
-```
-
-![](README_files/figure-gfm/cog-6.png)<!-- -->
+    ##   0.604   0.101  13.075
 
 ``` r
 ## even if we use the local .tif, with the older format it's much slower
@@ -109,7 +65,46 @@ system.time(project(rlocal, template, by_util = T))
 ```
 
     ##    user  system elapsed 
-    ##   6.719   2.990   9.708
+    ##   6.720   2.960   9.681
+
+Plot the different extractions to show that they worked.
+
+``` r
+plot(r1)
+```
+
+![](README_files/figure-gfm/plots-1.png)<!-- -->
+
+``` r
+plot(r2)
+```
+
+![](README_files/figure-gfm/plots-2.png)<!-- -->
+
+``` r
+plot(r3)
+```
+
+![](README_files/figure-gfm/plots-3.png)<!-- -->
+
+``` r
+plot(r4)
+```
+
+![](README_files/figure-gfm/plots-4.png)<!-- -->
+
+``` r
+plot(r5)
+```
+
+![](README_files/figure-gfm/plots-5.png)<!-- -->
+
+``` r
+plot(project(r, template, by_util = TRUE))
+plot(ext(r2), add = TRUE)
+```
+
+![](README_files/figure-gfm/plots-6.png)<!-- -->
 
 In Python it’s similar, we can do
 
@@ -131,3 +126,18 @@ w.ReadAsArray()
 #       [-32768, -32768, -32768, ..., -32768, -32768, -32768]], dtype=int16)
 
 ```
+
+## gdal translate options
+
+We chose options blocksize 480 so that the smallest overview would be
+that size (at 4800 we only end up with 2 overview levels).
+
+SPARSE_OK: ensures unused blocks are not stored (they are all 0, or
+nodata).
+
+COMPRESS: could choose DEFLATE instead
+
+OVERVIEW_RESAMPLING: AVERAGE so that the average value is stored from
+higher resolution levels, not just a sample
+
+NUM_THREADS: this just makes it go faster (for the compression).
