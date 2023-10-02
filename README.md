@@ -34,13 +34,23 @@ plot(project(r, rast(), by_util = T))
 template <- rast(r)
 res(template) <- res(r) * 20
 
-vaster::extent_from_cell(c(960, 960), c(-4800000, 4800000, -4800000, 4800000), 83050)
+#vaster::extent_from_cell(c(960, 960), c(-4800000, 4800000, -4800000, 4800000), 83050)
 #[1] c(90000, 1e+05, 3930000, 3940000)
 
+## this extent is one tile at 1/20 resolution
 project(r, rast(ext(c(90000, 1e+05, 3930000, 3940000)), crs = crs(r), res = 500), by_util = TRUE)
 
-> plot(project(r, rast(ext(-180, 180, -90, -50)), by_util = T))
-> plot(project(r, rast(ext(-180, 180, -90, -50), res = 1), by_util = T))
-> plot(project(r, rast(ext(-180, 180, -90, -50), res = .25), by_util = T))
+## these work very quickly
+plot(project(r, rast(ext(-180, 180, -90, -50)), by_util = T))
+plot(project(r, rast(ext(-180, 180, -90, -50), res = 1), by_util = T))
+plot(project(r, rast(ext(-180, 180, -90, -50), res = .25), by_util = T))
+
+```
+
+In Python it's similar, we can do 
+
+```python
+import rasterio
+ds = rasterio.open("/vsicurl/https://github.com/mdsumner/ibcso-cog/raw/main/IBCSO_v2_ice-surface_cog.tif")
 
 ```
