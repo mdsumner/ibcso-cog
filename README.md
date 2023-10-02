@@ -21,7 +21,7 @@ at this url
 See below for notes on these options.
 
 Some comparisons on performance are shown below, please note that five
-quite different extractions from the COG url are timed for less than 10
+quite different extractions from the COG url are timed for \~ 10-20
 seconds, giving five quite different data configurations at different
 scales and in different projections. To do one of the five from the
 local copy of the current v2 .tif takes nearly 10 seconds on its own.
@@ -55,7 +55,7 @@ r5 <- project(r, rast(ext(-180, 180, -90, -50), res = .25), by_util = T)
 ```
 
     ##    user  system elapsed 
-    ##   0.604   0.101  13.075
+    ##   0.607   0.092   5.859
 
 ``` r
 ## even if we use the local .tif, with the older format it's much slower
@@ -65,7 +65,7 @@ system.time(project(rlocal, template, by_util = T))
 ```
 
     ##    user  system elapsed 
-    ##   6.720   2.960   9.681
+    ##   7.164   3.071  10.238
 
 Plot the different extractions to show that they worked.
 

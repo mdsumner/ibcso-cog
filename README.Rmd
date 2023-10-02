@@ -27,7 +27,7 @@ gdal_translate IBCSO_v2_ice-surface.tif IBCSO_v2_ice-surface_cog.tif -of COG -co
 
 See below for notes on these options. 
 
-Some comparisons on performance are shown below, please note that five quite different extractions from the COG url are timed for less than 10 seconds, giving five quite different data configurations at different scales and in different projections. To do one of the five from the local copy of the current v2 .tif takes nearly 10 seconds on its own. 
+Some comparisons on performance are shown below, please note that five quite different extractions from the COG url are timed for ~ 10-20 seconds, giving five quite different data configurations at different scales and in different projections. To do one of the five from the local copy of the current v2 .tif takes nearly 10 seconds on its own. 
 
 
 ```{r cog}
