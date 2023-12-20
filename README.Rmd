@@ -96,6 +96,16 @@ w.ReadAsArray()
 ```
 
 
+
+## Chart
+
+Digital chart version created from tif version of the PDF with
+
+```
+gdal_translate IBCSO_chart.tif IBCSO_v2_digital_chart.tif -of COG -a_ullr -4833000  4797000  4837000 -6629000 -a_srs EPSG:9354 
+```
+
+
 ## gdal translate options
 
 We chose options blocksize 480 so that the smallest overview would be that size (at 4800 we only end up with 2 overview levels). 
