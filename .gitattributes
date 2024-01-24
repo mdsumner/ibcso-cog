@@ -1,1 +1,2 @@
 IBCSO_v2_ice-surface_cog.tif filter=lfs diff=lfs merge=lfs -text
+*.tif filter=lfs diff=lfs merge=lfs -text
