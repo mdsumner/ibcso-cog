@@ -21,11 +21,14 @@ at these urls:
 
 ```
 https://github.com/mdsumner/ibcso-cog/raw/main/IBCSO_v2_ice-surface_cog.tif
+```
 
+```
 https://github.com/mdsumner/ibcso-cog/raw/main/IBCSO_v2_bed_cog.tif
+```
 
+```
 https://github.com/mdsumner/ibcso-cog/raw/main/IBCSO_v2_digital_chart_cog.tif
-
 ```
 
 Prefix with `/vsicurl/` for general GDAL usage, and especially via the warper or RasterIO apis for fast access at any scale or region and in any crs. 
@@ -35,6 +38,9 @@ Prefix with `/vsicurl/` for general GDAL usage, and especially via the warper or
 > Dorschel, Boris; Hehemann, Laura; Viquerat, Sacha; Warnke, Fynn; Dreutter, Simon; Schulze Tenberge, Yvonne; Accettella, Daniela; An, Lu; Barrios, Felipe; Bazhenova, Evgenia A; Black, Jenny; Bohoyo, Fernando; Davey, Craig; de Santis, Laura; Escutia Dotti, Carlota; Fremand, Alice C; Fretwell, Peter T; Gales, Jenny A; Gao, Jinyao; Gasperini, Luca; Greenbaum, Jamin S; Henderson Jencks, Jennifer; Hogan, Kelly A; Hong, Jong Kuk; Jakobsson, Martin; Jensen, Laura; Kool, Johnathan; Larin, Sergei; Larter, Robert D; Leitchenkov, German L; Loubrieu, Benoît; Mackay, Kevin; Mayer, Larry; Millan, Romain; Morlighem, Mathieu; Navidad, Francisco; Nitsche, Frank-Oliver; Nogi, Yoshifumi; Pertuisot, Cécile; Post, Alexandra L; Pritchard, Hamish D; Purser, Autun; Rebesco, Michele; Rignot, Eric; Roberts, Jason L; Rovere, Marzia; Ryzhov, Ivan; Sauli, Chiara; Schmitt, Thierry; Silvano, Alessandro; Smith, Jodie E; Snaith, Helen; Tate, Alex J; Tinto, Kirsty; Vandenbossche, Philippe; Weatherall, Pauline; Wintersteller, Paul; Yang, Chunguo; Zhang, Tao; Arndt, Jan Erik (2022): The International Bathymetric Chart of the Southern Ocean Version 2 (IBCSO v2). PANGAEA, https://doi.org/10.1594/PANGAEA.937574
 
 
+
+
+## Creation (of the files above)
 
 ```
 wget https://download.pangaea.de/dataset/937574/files/IBCSO_v2_ice-surface.tif

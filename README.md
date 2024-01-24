@@ -45,6 +45,8 @@ any crs.
 > Version 2 (IBCSO v2). PANGAEA,
 > <https://doi.org/10.1594/PANGAEA.937574>
 
+## Creation (of the files above)
+
     wget https://download.pangaea.de/dataset/937574/files/IBCSO_v2_ice-surface.tif
 
     gdal_translate IBCSO_v2_ice-surface.tif IBCSO_v2_ice-surface_cog.tif -of COG -co COMPRESS=ZSTD -co PREDICTOR=2 -co SPARSE_OK=YES -co OVERVIEW_RESAMPLING=AVERAGE -co BLOCKSIZE=480 -co NUM_THREADS=ALL_CPUS
@@ -89,7 +91,7 @@ r5 <- project(r, rast(ext(-180, 180, -90, -50), res = .25), by_util = T)
 ```
 
     ##    user  system elapsed 
-    ##   0.620   0.241  13.481
+    ##   0.615   0.121  13.450
 
 ``` r
 ## even if we use the local .tif, with the older format it's much slower
@@ -99,7 +101,7 @@ system.time(project(rlocal, template, by_util = T))
 ```
 
     ##    user  system elapsed 
-    ##   5.320   4.647  11.781
+    ##   5.415   2.992   8.408
 
 Plot the different extractions to show that they worked.
 
