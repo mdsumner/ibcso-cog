@@ -10,18 +10,52 @@ chart of depths, currently at v2 in 2023.
 The .tif format is slow, it is not a Cloud-Optimized GeoTIFF so we would
 like to demonstrate the benefits of that format.
 
-We download it and convert to Cloud Optimized GeoTIFF and then host it
-at this url
-<https://github.com/mdsumner/ibcso-cog/raw/main/IBCSO_v2_ice-surface_cog.tif>.
+We download bedrock, ice surface, and chart and convert to Cloud
+Optimized GeoTIFF and then host it at these urls:
+
+    https://github.com/mdsumner/ibcso-cog/raw/main/IBCSO_v2_ice-surface_cog.tif
+
+    https://github.com/mdsumner/ibcso-cog/raw/main/IBCSO_v2_bed_cog.tif
+
+    https://github.com/mdsumner/ibcso-cog/raw/main/IBCSO_v2_digital_chart_cog.tif
+
+Prefix with `/vsicurl/` for general GDAL usage, and especially via the
+warper or RasterIO apis for fast access at any scale or region and in
+any crs.
+
+## Citation
+
+> Dorschel, Boris; Hehemann, Laura; Viquerat, Sacha; Warnke, Fynn;
+> Dreutter, Simon; Schulze Tenberge, Yvonne; Accettella, Daniela; An,
+> Lu; Barrios, Felipe; Bazhenova, Evgenia A; Black, Jenny; Bohoyo,
+> Fernando; Davey, Craig; de Santis, Laura; Escutia Dotti, Carlota;
+> Fremand, Alice C; Fretwell, Peter T; Gales, Jenny A; Gao, Jinyao;
+> Gasperini, Luca; Greenbaum, Jamin S; Henderson Jencks, Jennifer;
+> Hogan, Kelly A; Hong, Jong Kuk; Jakobsson, Martin; Jensen, Laura;
+> Kool, Johnathan; Larin, Sergei; Larter, Robert D; Leitchenkov, German
+> L; Loubrieu, Benoît; Mackay, Kevin; Mayer, Larry; Millan, Romain;
+> Morlighem, Mathieu; Navidad, Francisco; Nitsche, Frank-Oliver; Nogi,
+> Yoshifumi; Pertuisot, Cécile; Post, Alexandra L; Pritchard, Hamish D;
+> Purser, Autun; Rebesco, Michele; Rignot, Eric; Roberts, Jason L;
+> Rovere, Marzia; Ryzhov, Ivan; Sauli, Chiara; Schmitt, Thierry;
+> Silvano, Alessandro; Smith, Jodie E; Snaith, Helen; Tate, Alex J;
+> Tinto, Kirsty; Vandenbossche, Philippe; Weatherall, Pauline;
+> Wintersteller, Paul; Yang, Chunguo; Zhang, Tao; Arndt, Jan Erik
+> (2022): The International Bathymetric Chart of the Southern Ocean
+> Version 2 (IBCSO v2). PANGAEA,
+> <https://doi.org/10.1594/PANGAEA.937574>
 
     wget https://download.pangaea.de/dataset/937574/files/IBCSO_v2_ice-surface.tif
 
     gdal_translate IBCSO_v2_ice-surface.tif IBCSO_v2_ice-surface_cog.tif -of COG -co COMPRESS=ZSTD -co PREDICTOR=2 -co SPARSE_OK=YES -co OVERVIEW_RESAMPLING=AVERAGE -co BLOCKSIZE=480 -co NUM_THREADS=ALL_CPUS
 
+    wget  https://download.pangaea.de/dataset/937574/files/IBCSO_v2_bed.tif
+    gdal_translate IBCSO_v2_bed.tif IBCSO_v2_bed_cog.tif -of COG -co COMPRESS=ZSTD -co PREDICTOR=2 -co SPARSE_OK=YES -co OVERVIEW_RESAMPLING=AVERAGE -co BLOCKSIZE=480 -co NUM_THREADS=ALL_CPUS
+
 See below for notes on these options.
 
 Some comparisons on performance are shown below, please note that five
-quite different extractions from the COG url are timed for \~ 10-20
+quite different extractions from the COG url are timed for ~ 10-20
 seconds, giving five quite different data configurations at different
 scales and in different projections. To do one of the five from the
 local copy of the current v2 .tif takes nearly 10 seconds on its own.
@@ -31,7 +65,7 @@ dsn <- "/vsicurl/https://github.com/mdsumner/ibcso-cog/raw/main/IBCSO_v2_ice-sur
 library(terra)
 ```
 
-    ## terra 1.7.46
+    ## terra 1.7.65
 
 ``` r
 r <- rast(dsn)
@@ -55,7 +89,7 @@ r5 <- project(r, rast(ext(-180, 180, -90, -50), res = .25), by_util = T)
 ```
 
     ##    user  system elapsed 
-    ##   0.607   0.092   5.859
+    ##   0.620   0.241  13.481
 
 ``` r
 ## even if we use the local .tif, with the older format it's much slower
@@ -65,7 +99,7 @@ system.time(project(rlocal, template, by_util = T))
 ```
 
     ##    user  system elapsed 
-    ##   7.164   3.071  10.238
+    ##   5.320   4.647  11.781
 
 Plot the different extractions to show that they worked.
 
@@ -126,6 +160,12 @@ w.ReadAsArray()
 #       [-32768, -32768, -32768, ..., -32768, -32768, -32768]], dtype=int16)
 
 ```
+
+## Chart
+
+Digital chart version created from tif version of the PDF with
+
+    gdal_translate IBCSO_chart.tif IBCSO_v2_digital_chart.tif -of COG -a_ullr -4833000  4797000  4837000 -6629000 -a_srs EPSG:9354 
 
 ## gdal translate options
 
